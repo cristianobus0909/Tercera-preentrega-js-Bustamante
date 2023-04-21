@@ -1,28 +1,28 @@
 const pintarCarrito = ()=>{
     carritoCompra.innerHTML = "";
     carritoCompra.style.display = "flex"
-    //creamos el header del carrito <div class="modal">mHeader</div>
+ // Crea el encabezado del carrito
     const mHeader = document.createElement("div");
     mHeader.className = "modal";
     mHeader.innerHTML = `
         <h1 class="modalTitulo">Mi Carrito </h1>
     `;
-//le decimos al <div>carritoCompra padre que tiene un <div>mHeader hijo
+
     carritoCompra.appendChild(mHeader);
-//creamos un h2 que va a contener un texto "X" como boton de nuestro carrito
+// Agrega un botón para cerrar el carrito
     const cerrarCarrito = document.createElement("h2");
     cerrarCarrito.innerText = "X";
-    //le asignamos una clase a nuestro boton del carrito
+
     cerrarCarrito.className = "botonXCarrito";
-//a nuestro boton le agregamos un evento que cuando el usuario haga click se cierre
+
     cerrarCarrito.addEventListener("click", ()=>{
         carritoCompra.style.display = "none";
     });
-//le decimos a contenedor padre que agregamos un contenedor hijo <h2 class= "botonCarrito">X</h2>
+
     mHeader.appendChild(cerrarCarrito);
-// creamos el contenido de nuestro carrito de productos con una funcion usando el metodo forEach
+// Crea un elemento HTML para cada producto en el carrito
     carrito.forEach((prod)=>{
-        //creamos un <div class= "modalContent"> donde van a ir la estructura de los productos agregados
+        
         let carritoContent = document.createElement("div");
         carritoContent.className = "modalContent";
         carritoContent.innerHTML = `
@@ -36,7 +36,7 @@ const pintarCarrito = ()=>{
             <span class="deleteProduct"> ❌ </span>
         `;
         carritoCompra.appendChild(carritoContent);
-
+// Agrega un evento para restar la cantidad de un producto
         let restaProd = carritoContent.querySelector(".restar");
 
         restaProd.addEventListener("click", () => {
@@ -46,13 +46,14 @@ const pintarCarrito = ()=>{
             guardarLocal();
             pintarCarrito();
         });
+        // Agrega un evento para sumar la cantidad de un producto
         let sumaProd = carritoContent.querySelector(".sumar");
         sumaProd.addEventListener("click", () => {
             prod.cantidad++;
             guardarLocal();
             pintarCarrito();
         });
-
+// Agrega un evento para eliminar un producto del carrito
         let eliminar = carritoContent.querySelector(".deleteProduct");
 
         eliminar.addEventListener("click", () => {
@@ -60,14 +61,17 @@ const pintarCarrito = ()=>{
         });
 
     })
+     // Muestra el total de la compra
     const total = carrito.reduce((acc, el) => acc + el.precio * el.cantidad, 0);
     const totalCompra = document.createElement("div");
     totalCompra.className = "totalCompra";
     totalCompra.innerHTML = `Total a pagar: $${total}`;
     carritoCompra.appendChild(totalCompra);
 }
+// Agrega un evento para mostrar el carrito
 verCarrito.addEventListener("click", pintarCarrito);
 
+// Elimina un producto del carrito
 const eliminarProducto = (id)=>{
     const buscarId = carrito.find((element) => element.id === id);
     carrito = carrito.filter((carritoId) => {
@@ -77,6 +81,8 @@ const eliminarProducto = (id)=>{
     guardarLocal();
     pintarCarrito();
 };
+
+// Actualiza el número de productos en el carrito en la interfaz de usuario
 const cuentaCarrito = () => {
     cantidadCarrito.style.display = "block";
 
